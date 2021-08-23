@@ -6,6 +6,6 @@ pages << {
   method: "GET",
   headers: {"User-Agent" => "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"},
   driver: {
-    code: "await page.click('#GZxTNIAhngUAZwF', {delay: 5000}); await sleep(1000);"
+    code: "await page.click('#px-captcha', {delay: 10000}); await sleep(5000);"
   }
 }
