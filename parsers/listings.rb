@@ -1,5 +1,6 @@
 nokogiri = Nokogiri.HTML(content)
 
+products = nokogiri.css('li.Grid-col')
 cookies = page['response_cookie']
 
 click_captha_code = " 
@@ -18,48 +19,22 @@ click_captha_code = "
   };
 "
 
-products = nokogiri.css('li.Grid-col')
+products.each do |i|
+    link_node = i.at_css('.product-title-link')
+    url = link_node['href'] ? "https://www.walmart.com#{link_node['href']}" : nil
 
-products.each do |product|
-	a_element = products.at_css('.product-title-link')
-	url = a_element['href'] ? "https://www.walmart.com#{a_element['href']}" : nil
-
-	if url
-		pages << {
-			url: url,
-			page_type: 'products',
-			fetch_type: 'browser',
-			force_fetch: true,
-			method: "GET",
-			headers: {"User-Agent" => "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"},
-			driver: {
-				code: click_captha_code
-			}
-		}
-	end
+    if url =~ /\Ahttps?:\/\//i
+        pages << {
+          url: url,
+          page_type: "products",
+          fetch_type: "browser",
+          method: "GET",
+          force_fetch: true,
+          headers: { 
+          "User-Agent": "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"},
+          driver: {
+            code: click_captha_code
+          }
+        }
+    end
 end
-
-=begin
-LIMIT_PAGE = 10
-current_page = nokogiri.at_css('.paginator-list > li.active > a.active')
-
-if current_page
-	current_page = current_page.text.to_i
-	if current_page <= LIMIT_PAGE
-		next_page = "https://www.walmart.com/browse/movies-tv-shows/4096?facet=new_releases%3ALast+90+Days&page=#{current_page + 1}"
-		if next_page
-			pages << {
-				url: next_page,
-				page_type: 'listings',
-				fetch_type: 'browser',
-				force_fetch: true,
-				method: "GET",
-				headers: {"User-Agent" => "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"},
-				driver: {
-					code: click_captha_code
-				}
-			}
-		end
-	end
-end
-=end
