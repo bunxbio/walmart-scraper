@@ -21,6 +21,7 @@ end
 limit_page = 11
 current_page = nokogiri.at_css('.paginator-list > li.active > a.active')
 
+=begin
 if current_page
 	current_page = current_page.text.to_i
 end
@@ -37,3 +38,4 @@ if current_page && (current_page < limit_page)
 		}
 	end
 end
+=end
