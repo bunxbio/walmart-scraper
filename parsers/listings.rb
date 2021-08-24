@@ -1,6 +1,5 @@
 nokogiri = Nokogiri.HTML(content)
 
-products = nokogiri.css('li.Grid-col')
 cookies = page['response_cookie']
 
 click_captha_code = " 
@@ -19,12 +18,13 @@ click_captha_code = "
   };
 "
 
+products = nokogiri.css('li.Grid-col')
 
 products.each do |product|
 	a_element = products.at_css('.product-title-link')
 	url = a_element['href'] ? "https://www.walmart.com#{a_element['href']}" : nil
 
-	if url =~ /\Ahttps?:\/\//i
+	if url
 		pages << {
 			url: url,
 			page_type: 'products',
