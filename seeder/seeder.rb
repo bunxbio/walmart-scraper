@@ -12,7 +12,7 @@ click_captha_code = "
       ]);
     };
   };
-  await page.setPageLimitLoadingTime(3000);
+  await page.setPageLimitLoadingTime(1000);
 "
 
 
