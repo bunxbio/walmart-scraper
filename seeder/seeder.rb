@@ -9,6 +9,7 @@ click_captha_code = "
       await Promise.all([
         page.waitForNavigation(),
         page.click('iframe[style*=\"display: block\"]', {delay: 9547}),
+        page.setPageLimitLoadingTime(3000);
       ]);          
     };
   };
