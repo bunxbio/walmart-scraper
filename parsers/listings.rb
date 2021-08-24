@@ -24,7 +24,7 @@ products.each do |product|
 	a_element = products.at_css('a.product-title-link')
 	url = a_element['href'] ? "https://www.walmart.com#{a_element['href']}" : nil
 
-	if url
+	if url =~ /\Ahttps?:\/\//i
 		pages << {
 			url: url,
 			page_type: 'products',
@@ -32,7 +32,9 @@ products.each do |product|
 			force_fetch: true,
 			method: "GET",
 			headers: {"User-Agent" => "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"},
-			driver: {code: click_captha_code},
+			driver: {
+				code: click_captha_code
+			},
 			vars: {
 				url: url
 			}
