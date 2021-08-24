@@ -1,63 +1,40 @@
 nokogiri = Nokogiri.HTML(content)
 
+products = nokogiri.css('li.Grid-col')
+cookies = page['response_cookie']
+
 click_captha_code = " 
   await sleep(3000);
-  if ( (await page.$('div#js-global-footer-wrapper form#hf-email-signup-form')) == null){
+  if ( (await page.$('div#js-global-footer-wrapper form#hf-email-signup-form')) == null ) {
     await sleep(5412);
     if ( (await page.$('iframe[style*=\"display: block\"]')) !== null) {
       // do things with its content
       await page.hover('iframe[style*=\"display: block\"]'); await sleep(1428); 
       // click hold and wait loading new page
       await Promise.all([
-        page.waitForNavigation(),
+        page.waitForNavigation({timeout: 30000}),
         page.click('iframe[style*=\"display: block\"]', {delay: 9547}),
-      ]);
+      ]);          
     };
   };
 "
 
-cookies = page['response_cookie']
-products = nokogiri.css('li.Grid-col')
+products.each do |item|
 
-products.each do |product|
-	a_element = products.at_css('a.product-title-link')
-	if a_element
-		url = "https://www.walmart.com#{a_element['href']}"
+    link_node = item.at_css('.product-title-link')
+    url = link_node['href'] ? "https://www.walmart.com#{link_node['href']}" : nil
 
-		pages << {
-			url: url,
-			page_type: 'products',
-			fetch_type: 'browser',
-			force_fetch: true,
-			method: "GET",
-			headers: {"User-Agent" => "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"},
-			driver: {code: click_captha_code},
-			vars: {
-				url: url
-			}
-		}
-	end
+    if url =~ /\Ahttps?:\/\//i
+        pages << {
+          page_type: "products",
+          method: "GET",
+          headers: { 
+          "User-Agent": "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"},
+          url: url,
+          fetch_type: "browser",
+          driver: {
+            code: click_captha_code},
+          force_fetch: true
+        }
+    end
 end
-
-
-#limit_page = 11
-#current_page = nokogiri.at_css('.paginator-list > li.active > a.active')
-
-=begin
-if current_page
-	current_page = current_page.text.to_i
-end
-
-if current_page && (current_page < limit_page)
-	next_page = "https://www.walmart.com/browse/movies-tv-shows/4096?facet=new_releases%3ALast+90+Days&page=#{current_page + 1}"
-	if next_page
-		pages << {
-			url: next_page,
-			page_type: 'listings',
-			fetch_type: 'browser',
-			force_fetch: true,
-			method: 'GET'
-		}
-	end
-end
-=end
