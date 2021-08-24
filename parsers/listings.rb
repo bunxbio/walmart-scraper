@@ -46,7 +46,7 @@ current_page = nokogiri.at_css('.paginator-list > li.active > a.active').text
 if current_page
   current_page = current_page.to_i
   if current_page <= LIMIT_PAGE
-    next_page = current_page ? "https://www.walmart.com/browse/movies-tv-shows/4096?facet=new_releases%3ALast+90+Days&page=#{current_page + 1}" : nil
+    next_page = current_page ? "https://www.walmart.com/browse/movies-tv-shows/4096?facet=new_releases:Last+90+Days&page=#{current_page + 1}" : nil
     if next_page =~ /\Ahttps?:\/\//i
       pages << {
         url: next_page,
