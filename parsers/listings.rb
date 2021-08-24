@@ -22,7 +22,7 @@ products = nokogiri.css('li.Grid-col')
 
 products.each do |product|
 	a_element = products.at_css('a.product-title-link')
-	url = "https://www.walmart.com#{a_element['href']}"
+	url = a_element ? "https://www.walmart.com#{a_element['href']}" : nil
 
 	if url
 		pages << {
