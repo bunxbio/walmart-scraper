@@ -1,5 +1,7 @@
 nokogiri = Nokogiri.HTML(content)
 
+cookies = page['response_cookie']
+
 click_captha_code = " 
   await sleep(3000);
   if ( (await page.$('div#js-global-footer-wrapper form#hf-email-signup-form')) == null ) {
@@ -16,7 +18,6 @@ click_captha_code = "
   };
 "
 
-cookies = page['response_cookie']
 products = nokogiri.css('li.Grid-col')
 
 products.each do |product|
@@ -45,7 +46,7 @@ current_page = nokogiri.at_css('.paginator-list > li.active > a.active')
 
 if current_page
 	current_page = current_page.text.to_i
-	if current_page <= limit_page
+	if current_page <= LIMIT_PAGE
 		next_page = "https://www.walmart.com/browse/movies-tv-shows/4096?facet=new_releases%3ALast+90+Days&page=#{current_page + 1}"
 		if next_page
 			pages << {
