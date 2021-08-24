@@ -12,7 +12,6 @@ click_captha_code = "
       ]);
     };
   };
-  await page.setPageLimitLoadingTime(1000);
 "
 
 
