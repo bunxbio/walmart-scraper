@@ -39,7 +39,7 @@ products.each do |product|
 	end
 end
 
-
+=begin
 LIMIT_PAGE = 10
 current_page = nokogiri.at_css('.paginator-list > li.active > a.active')
 
@@ -62,3 +62,4 @@ if current_page
 		end
 	end
 end
+=end
