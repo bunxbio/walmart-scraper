@@ -14,7 +14,8 @@ product['original_price'] = original_price ? original_price.text.strip.split.las
 rating = nokogiri.at_css('button.average-rating > span:nth-child(1) > span:nth-child(1)').text.strip.to_f
 product['rating'] = rating == 0 ? nil : rating
 
-reviews_count = nokogiri.at_css('.seo-review-count').text.strip.to_i
+reviews_count_check = nokogiri.at_css('.seo-review-count')
+reviews_count = reviews_count_check ? reviews_count_check.text.strip.to_i : nil
 product['reviews_count'] = reviews_count == 0 ? nil : reviews_count
 
 product['publisher'] = nokogiri.at_css('tr.product-specification-row:nth-child(5) > td:nth-child(2) > div:nth-child(1)').text.strip
