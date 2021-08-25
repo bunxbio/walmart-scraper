@@ -23,7 +23,7 @@ product['publisher'] = nokogiri.at_css('div.Grid-col > div.hf-Bot > a.prod-brand
 
 product['walmart_number'] = nokogiri.at_css('div.prod-productsecondaryinformation.display-inline-block.prod-SecondaryInfo div.valign-middle.secondary-info-margin-right.copy-mini.display-inline-block.wm-item-number').text.split('#').last.strip
 
-img_url = nokogiri.at_css('.prod-hero-image-image')['src'].split('?').first
+img_url = nokogiri.at_css('.hover-zoom-container .hover-zoom-hero-image')['src'].split('?').first
 product['img_url'] = "https:#{img_url}"
 
 product['categories'] = nokogiri.css('li.breadcrumb a span').collect{|i| i.text.strip}
