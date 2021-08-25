@@ -10,3 +10,6 @@ parsers:
   - file: ./parsers/products.rb
     page_type: products
     disabled: false
+
+exporters:
+  - file: ./exporters/products_json.yaml
