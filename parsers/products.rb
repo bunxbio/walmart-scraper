@@ -11,9 +11,9 @@ product['current_price'] = nokogiri.at_css('#price .hide-content span.visuallyhi
 original_price = nokogiri.at_css('.price-old .visuallyhidden')
 product['original_price'] = original_price ? original_price.text.strip.split.last.gsub('$', '').to_f : nil
 
-rating_check = nokogiri.at_css('div.arranger span.button-wrapper span')[0]
+rating_check = nokogiri.at_css('div.arranger span.button-wrapper > span:nth-child(1)')
 rating = rating_check ? rating_check.text.strip.to_f : nil
-product['rating'] = rating == 0 ? nil : rating
+product['rating'] = rating
 
 reviews_count_check = nokogiri.at_css('.seo-review-count')
 reviews_count = reviews_count_check ? reviews_count_check.text.strip.to_i : nil
@@ -23,7 +23,13 @@ product['publisher'] = nokogiri.at_css('div.Grid-col > div.hf-Bot > a.prod-brand
 
 product['walmart_number'] = nokogiri.at_css('div.prod-productsecondaryinformation.display-inline-block.prod-SecondaryInfo div.valign-middle.secondary-info-margin-right.copy-mini.display-inline-block.wm-item-number').text.split('#').last.strip
 
-img_url = nokogiri.at_css('.hover-zoom-container .hover-zoom-hero-image')['src'].split('?').first
+img_url = nokogiri.at_css('.prod-hero-image-image')
+if img_url
+	img_url = img_url['src'].split('?').first
+elsif !img_url
+	img_url = nokogiri.at_css('.hover-zoom-container .hover-zoom-hero-image')['src'].split('?').first
+end
+
 product['img_url'] = "https:#{img_url}"
 
 product['categories'] = nokogiri.css('li.breadcrumb a span').collect{|i| i.text.strip}
